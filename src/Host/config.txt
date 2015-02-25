@@ -1,0 +1,2 @@
+﻿/dev;c:\dev
+/temp;c:\temp
