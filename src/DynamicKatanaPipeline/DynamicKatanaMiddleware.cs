@@ -13,7 +13,7 @@
 
     public class DynamicKatanaMiddleware
     {
-        private AppFunc _appFunc;
+        private AppFunc _dynamicAppFunc;
         private readonly FileSystemWatcher _fileSystemWatcher;
 
         public DynamicKatanaMiddleware(AppFunc next, string configurationFilePath)
@@ -31,7 +31,7 @@
 
         public Task Invoke(IDictionary<string, object> environment)
         {
-            return _appFunc(environment);
+            return _dynamicAppFunc(environment);
         }
 
         private void ConfigurePipeline(AppFunc next, string fullPath)
@@ -65,12 +65,12 @@
                     await next2();
                 });
                 app.Run(ctx => next(ctx.Environment));
-                _appFunc = app.Build();
+                _dynamicAppFunc = app.Build();
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex);
-                _appFunc = async env =>
+                _dynamicAppFunc = async env =>
                 {
                     var context = new OwinContext(env);
                     context.Response.StatusCode = 500;
