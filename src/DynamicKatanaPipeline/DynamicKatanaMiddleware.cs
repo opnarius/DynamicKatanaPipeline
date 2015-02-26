@@ -39,7 +39,9 @@
             Console.WriteLine("Configuring pipeline...");
             try
             {
-                string index = "<HTML><HEAD><TITLE>Dynamic Middleware</TITLE></HEAD><BODY>";
+                string index = string.Format(
+                    "<HTML><HEAD><TITLE>Dynamic Middleware</TITLE></HEAD><BODY><p>Edit {0} and refresh to see below links change.</p>",
+                    fullPath);
                 var allLines = File.ReadAllLines(fullPath);
 
                 var app = new AppBuilder();
@@ -49,7 +51,7 @@
                     app.UseDirectoryBrowser(new DirectoryBrowserOptions
                     {
                         RequestPath = new PathString(paths[0]),
-                        FileSystem = new PhysicalFileSystem(paths[1]),
+                        FileSystem = new PhysicalFileSystem(paths[1])
                     });
                     index += string.Format("<a href='{0}'>{0}</a><br>", paths[0]);
                     Console.WriteLine("Directory {0} on {1}", paths[1], paths[0]);
