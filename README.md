@@ -4,4 +4,4 @@
 
 Run the host project, edit the `config.txt` file (should be obvious) and refresh the page. 
 
-Note: this isn't robust by any means.
+Note: this is just an example and isn't robust by any means.
