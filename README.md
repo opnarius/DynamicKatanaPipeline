@@ -6,4 +6,6 @@ Run the host project, edit the `config.txt` file (should be obvious) and refresh
 
 The key trick is to [new up your own](https://github.com/damianh/DynamicKatanaPipeline/blob/master/src/DynamicKatanaPipeline/DynamicKatanaMiddleware.cs#L47) `IAppBuilder` instance _within_ your middleware and [direct subsequent requests down the new pipeline](https://github.com/damianh/DynamicKatanaPipeline/blob/master/src/DynamicKatanaPipeline/DynamicKatanaMiddleware.cs#L68). 
 
+You can use this infront of any pipeline that you want to rebuild at runtime i.e. multi-tenent scenarios, or changing settings for security middleware.
+
 Note: this is just an example and isn't robust by any means.
