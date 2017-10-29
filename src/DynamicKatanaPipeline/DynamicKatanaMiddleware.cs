@@ -42,34 +42,43 @@
                 string index = string.Format(
                     "<HTML><HEAD><TITLE>Dynamic Middleware</TITLE></HEAD><BODY><p>Edit {0} and refresh to see below links change.</p>",
                     fullPath);
+
                 var allLines = File.ReadAllLines(fullPath);
 
                 var app = new AppBuilder();
-                foreach(var line in allLines)
+
+                foreach (var line in allLines)
                 {
                     var paths = line.Split(';');
+
                     app.UseDirectoryBrowser(new DirectoryBrowserOptions
                     {
                         RequestPath = new PathString(paths[0]),
                         FileSystem = new PhysicalFileSystem(paths[1])
                     });
+
                     index += string.Format("<a href='{0}'>{0}</a><br>", paths[0]);
+
                     Console.WriteLine("Directory {0} on {1}", paths[1], paths[0]);
                 }
+
                 app.Use(async (ctx, next2) =>
                 {
-                    if(ctx.Request.Path.Value == "/")
+                    if (ctx.Request.Path.Value == "/")
                     {
                         await ctx.Response.WriteAsync(index);
                     }
                     await next2();
                 });
+
                 app.Run(ctx => next(ctx.Environment));
+
                 _dynamicAppFunc = app.Build();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
+
                 _dynamicAppFunc = async env =>
                 {
                     var context = new OwinContext(env);
